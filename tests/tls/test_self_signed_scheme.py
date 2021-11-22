@@ -49,7 +49,8 @@ class TestSelfSignedScheme(TestkitTestCase):
                     self._server = TlsServer("trustedRoot_thehost")
                     self.assertTrue(self._try_connect(scheme, "thehost",
                                                       driver_config))
-                self._server.reset()
+                if self._server is not None:
+                    self._server.reset()
 
     def test_trusted_ca_expired_server_correct_hostname(self):
         """
@@ -65,7 +66,8 @@ class TestSelfSignedScheme(TestkitTestCase):
                     self._server = TlsServer("trustedRoot_thehost_expired")
                     self.assertTrue(self._try_connect(scheme, "thehost",
                                                       driver_config))
-                self._server.reset()
+                if self._server is not None:
+                    self._server.reset()
 
     def test_trusted_ca_wrong_hostname(self):
         """
@@ -83,9 +85,11 @@ class TestSelfSignedScheme(TestkitTestCase):
                 with self.subTest(scheme
                                   + "-" + str(driver_config)):
                     self._server = TlsServer("trustedRoot_thehost")
-                    self.assertTrue(self._try_connect(scheme, "thehostbutwrong",
+                    self.assertTrue(self._try_connect(scheme,
+                                                      "thehostbutwrong",
                                                       driver_config))
-                self._server.reset()
+                if self._server is not None:
+                    self._server.reset()
 
     def test_untrusted_ca_correct_hostname(self):
         """ Should connect """
@@ -97,7 +101,8 @@ class TestSelfSignedScheme(TestkitTestCase):
                     self._server = TlsServer("untrustedRoot_thehost")
                     self.assertTrue(self._try_connect(scheme, "thehost",
                                                       driver_config))
-                self._server.reset()
+                if self._server is not None:
+                    self._server.reset()
 
     def test_untrusted_ca_wrong_hostname(self):
         """ Should connect """
@@ -107,9 +112,11 @@ class TestSelfSignedScheme(TestkitTestCase):
                 with self.subTest(scheme
                                   + "-" + str(driver_config)):
                     self._server = TlsServer("untrustedRoot_thehost")
-                    self.assertTrue(self._try_connect(scheme, "thehostbutwrong",
+                    self.assertTrue(self._try_connect(scheme,
+                                                      "thehostbutwrong",
                                                       driver_config))
-                self._server.reset()
+                if self._server is not None:
+                    self._server.reset()
 
     def test_unencrypted(self):
         """
@@ -127,7 +134,8 @@ class TestSelfSignedScheme(TestkitTestCase):
                                              disable_tls=True)
                     self.assertFalse(self._try_connect(scheme, "thehost",
                                                        driver_config))
-                self._server.reset()
+                if self._server is not None:
+                    self._server.reset()
 
 
 class TestTrustAllCertsConfig(TestSelfSignedScheme):
