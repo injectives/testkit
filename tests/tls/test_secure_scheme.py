@@ -120,7 +120,7 @@ class TestSecureScheme(TestkitTestCase):
                                   + "-" + str(driver_config)):
                     # The server cert doesn't really matter but set it to the one
                     # that would work if TLS happens to be on.
-                    self._start_server("thehost", disableTls=True)
+                    self._start_server("thehost", disable_tls=True)
                     self.assertFalse(self._try_connect(scheme, "thehost",
                                                        driver_config))
                 self._server.reset()
@@ -154,7 +154,7 @@ class TestTrustCustomCertsConfig(TestTrustSystemCertsConfig):
     extra_driver_configs = (
         {"encrypted": True, "trustedCertificates": ["customRoot.crt"]},
         {"encrypted": True, "trustedCertificates": ["customRoot2.crt",
-                                                    "customRoot.crt"]},
+                                                     "customRoot.crt"]},
     )
     cert_prefix = "customRoot_"
 

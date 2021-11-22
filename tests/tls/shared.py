@@ -4,23 +4,26 @@ import sys
 import time
 
 from nutkit.frontend import Driver
-from nutkit.protocol import AuthorizationToken, DriverError
+from nutkit.protocol import (
+    AuthorizationToken,
+    DriverError,
+)
 
 # Retrieve path to the repository containing this script.
 # Use this path as base for locating a whole bunch of other stuff.
-thisPath = os.path.dirname(os.path.abspath(__file__))
+THIS_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class TlsServer:
-    def __init__(self, server_cert, minTls="0", maxTls="2", disableTls=False):
+    def __init__(self, server_cert, minTls="0", maxTls="2", disable_tls=False):
         """
         Name of server certificate, corresponds to a .pem and .key file.
         """
-        server_path = os.path.join(thisPath, "..", "..", "tlsserver",
+        server_path = os.path.join(THIS_PATH, "..", "..", "tlsserver",
                                    "tlsserver")
-        cert_path = os.path.join(thisPath, "certs", "server",
+        cert_path = os.path.join(THIS_PATH, "certs", "server",
                                  "%s.pem" % server_cert)
-        key_path = os.path.join(thisPath, "certs", "server",
+        key_path = os.path.join(THIS_PATH, "certs", "server",
                                 "%s.key" % server_cert)
         params = [
             server_path,
@@ -30,7 +33,7 @@ class TlsServer:
             "-minTls", minTls,
             "-maxTls", maxTls
         ]
-        if disableTls:
+        if disable_tls:
             params.append("--disableTls")
         self._process = subprocess.Popen(
             params,
@@ -48,10 +51,7 @@ class TlsServer:
         self._process.stderr.close()
 
     def connected(self):
-        """
-        Checks that the server has stopped and its exit code to determine if
-        driver connected or not.
-        """
+        """Check if the server stopped w/o error and if a driver connected."""
         polls = 100
         while polls:
             self._process.poll()
@@ -67,8 +67,6 @@ class TlsServer:
         raise Exception("Timeout")
 
     def _dump(self):
-        # self._close_pipes()
-        # return
         sys.stdout.flush()
         print(">>>> Captured TLS server stdout")
         for line in self._process.stdout:

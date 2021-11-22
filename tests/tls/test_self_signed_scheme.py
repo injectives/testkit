@@ -124,7 +124,7 @@ class TestSelfSignedScheme(TestkitTestCase):
                     # The server cert doesn't really matter but set it to the
                     # one that would work if TLS happens to be on.
                     self._server = TlsServer("untrustedRoot_thehost",
-                                             disableTls=True)
+                                             disable_tls=True)
                     self.assertFalse(self._try_connect(scheme, "thehost",
                                                        driver_config))
                 self._server.reset()
