@@ -79,3 +79,7 @@ class RoutingV3(RoutingV4x4):
                 self.assertIn("routing", e.msg)
 
         self.assertTrue(failed)
+
+    def test_should_succeed_when_another_conn_fails_and_discover_using_tx_run(
+            self):
+        super().test_should_succeed_when_another_conn_fails_and_discover_using_tx_run()
