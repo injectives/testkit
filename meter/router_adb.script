@@ -1,0 +1,8 @@
+!: BOLT 4.4
+
+A: HELLO {"{}": "*"}
+*: RESET
+C: ROUTE "*" "*" "*"
+S: SUCCESS { "rt": { "ttl": 1000, "db": "adb", "servers": [{"addresses": ["localhost:9000"], "role":"ROUTE"}, {"addresses": ["localhost:9010", "localhost:9011"], "role":"READ"}, {"addresses": ["localhost:9020", "localhost:9021"], "role":"WRITE"}]}}
+*: RESET
+?: GOODBYE
