@@ -41,8 +41,8 @@ class TlsServer:
             params.append("--disableTls")
         self._process = subprocess.Popen(
             params,
-            stdout=sys.stdout,
-            stderr=sys.stdout,
+            stdout=subprocess.STDOUT,
+            stderr=subprocess.STDOUT,
             close_fds=True,
             encoding="utf-8"
         )

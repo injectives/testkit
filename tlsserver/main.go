@@ -40,6 +40,7 @@ func main() {
 
 	if !disableTls {
 		cert, err := tls.LoadX509KeyPair(certPath, keyPath)
+
 		if err != nil {
 			exitWithError(err)
 		}
