@@ -86,13 +86,13 @@ class TlsServer:
         sys.stdout.flush()
 
     def _kill(self):
+        print(self._process.stdout.readlines())
         self._process.kill()
         self._process.wait()
         self._dump()
         self._process = None
 
     def reset(self):
-        print(self._process.stdout.readlines())
         if self._process:
             self._kill()
 
