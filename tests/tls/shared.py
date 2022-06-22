@@ -86,7 +86,6 @@ class TlsServer:
         sys.stdout.flush()
 
     def _kill(self):
-        print(self._process.stdout.readlines())
         self._process.kill()
         self._process.wait()
         self._dump()
