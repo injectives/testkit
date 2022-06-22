@@ -41,14 +41,14 @@ class TlsServer:
             params.append("--disableTls")
         self._process = subprocess.Popen(
             params,
-            stdout=subprocess.STDOUT,
-            stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             close_fds=True,
             encoding="utf-8"
         )
         # Wait until something is written to know it started
-        # line = self._process.stdout.readline()
-        # print(line, end="")
+        line = self._process.stdout.readline()
+        print(line, end="")
 
     def _close_pipes(self):
         self._process.stdout.close()
@@ -92,6 +92,7 @@ class TlsServer:
         self._process = None
 
     def reset(self):
+        print(self._process.stdout.readlines())
         if self._process:
             self._kill()
 
