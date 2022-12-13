@@ -117,7 +117,7 @@ class TestSessionRunParameters(TestkitTestCase):
                 self._run("tx_meta", routing,
                           session_args=("w",),
                           run_kwargs={
-                              "tx_meta": {"akey": types.CypherString("aval")}
+                              "tx_meta": {"akey": "aval"}
                           })
 
     @driver_feature(types.Feature.BOLT_4_4)
@@ -211,7 +211,7 @@ class TestSessionRunParameters(TestkitTestCase):
                           },
                           run_kwargs={
                               "params": {"p": types.CypherInt(1)},
-                              "tx_meta": {"k": types.CypherString("v")},
+                              "tx_meta": {"k": "v"},
                               "timeout": 11
                           })
 
