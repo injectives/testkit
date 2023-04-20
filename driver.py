@@ -90,7 +90,8 @@ def start_container(testkit_path, branch_name, driver_name, driver_path,
         host_map={"host.docker.internal": "host-gateway"},
         port_map={9876: 9876},  # For convenience when debugging
         network=network,
-        working_folder="/driver"
+        working_folder="/driver",
+        env_map={"TESTKIT_BACKEND_LOGGING_LEVEL": "FINE"}
     )
     docker.network_connect(secondary_network, container_name)
     container = docker.start(container_name)
