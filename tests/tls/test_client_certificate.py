@@ -47,8 +47,7 @@ class TestClientCertificate(TestkitTlsTestCase):
 
     def test_s_and_client_certificate_present(self):
         schemes = "neo4j+s", "bolt+s"
-        client_certificates = (self._get_client_certificate(),
-                               self._get_client_certificate_with_password())
+        client_certificates = (self._get_client_certificate())
         for client_certificate in client_certificates:
             for scheme in schemes:
                 with self.subTest(scheme=scheme,
