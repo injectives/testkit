@@ -47,18 +47,17 @@ class TestClientCertificate(TestkitTlsTestCase):
 
     def test_s_and_client_certificate_present(self):
         schemes = "neo4j+s", "bolt+s"
-        client_certificates = (self._get_client_certificate())
-        for client_certificate in client_certificates:
-            for scheme in schemes:
-                with self.subTest(scheme=scheme,
-                                  client_certificate=client_certificate):
-                    self._start_server("trustedRoot_thehost",
-                                       client_cert=self.client_cert_on_server)
-                    self.assertTrue(self._try_connect(
-                        self._server, scheme, "thehost",
-                        client_certificate=client_certificate,
-                    ))
-                self._server.reset()
+        for scheme in schemes:
+            client_certificate = self._get_client_certificate();
+            with self.subTest(scheme=scheme,
+                              client_certificate=client_certificate):
+                self._start_server("trustedRoot_thehost",
+                                   client_cert=self.client_cert_on_server)
+                self.assertTrue(self._try_connect(
+                    self._server, scheme, "thehost",
+                    client_certificate=client_certificate,
+                ))
+            self._server.reset()
 
     def test_s_and_certificate_not_present(self):
         schemes = "neo4j+s", "bolt+s"
