@@ -6,6 +6,7 @@ package main
 // No need to build this when running tests.
 
 import (
+    "crypto"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"
@@ -66,11 +67,8 @@ func writeKeyEncrypted(password, path string, keyx interface{}) {
 	case *rsa.PrivateKey:
 	    der, err := pkcs8.MarshalPrivateKey(key, []byte(password), &pkcs8.Opts{
 				Cipher: pkcs8.AES256CBC,
-				KDFOpts: pkcs8.ScryptOpts{
-					CostParameter:            1 << 2,
-					BlockSize:                8,
-					ParallelizationParameter: 1,
-					SaltSize:                 16,
+				KDFOpts: pkcs8.PBKDF2Opts{
+					SaltSize: 16, IterationCount: 2000, HMACHash: crypto.SHA256,
 				},
 			})
 		if err != nil {
