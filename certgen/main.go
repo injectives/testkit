@@ -64,11 +64,6 @@ func writeKeyEncrypted(password, path string, keyx interface{}) {
 
 	switch key := keyx.(type) {
 	case *rsa.PrivateKey:
-// 	    der, err := pkcs8.ConvertPrivateKeyToPKCS8(key, []byte(password))
-// 		if err != nil {
-// 			panic(err)
-// 		}
-
 		der, err := pkcs8.MarshalPrivateKey(key, []byte(password), nil)
 		if err != nil {
 			panic(err)
