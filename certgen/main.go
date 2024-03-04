@@ -68,7 +68,7 @@ func writeKeyEncrypted(password, path string, keyx interface{}) {
 		}
 
 		block := &pem.Block{
-			Type:  "RSA PRIVATE KEY",
+			Type:  "ENCRYPTED PRIVATE KEY",
 			Bytes: m,
 		}
 
