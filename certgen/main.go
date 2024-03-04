@@ -18,6 +18,8 @@ import (
 	"os"
 	"path"
 	"time"
+
+	"github.com/youmark/pkcs8"
 )
 
 func createFile(path string) *os.File {
@@ -62,23 +64,25 @@ func writeKeyEncrypted(password, path string, keyx interface{}) {
 
 	switch key := keyx.(type) {
 	case *rsa.PrivateKey:
-		m, err := x509.MarshalPKCS8PrivateKey(key)
+	    tt := struct {
+		    password []byte
+		    opts     *pkcs8.Opts
+	    }{
+			password: []byte("password"),
+			opts: nil,
+		}
+
+	    der, err := pkcs8.MarshalPrivateKey(key, tt.password, tt.opts)
 		if err != nil {
 			panic(err)
 		}
 
 		block := &pem.Block{
 			Type:  "ENCRYPTED PRIVATE KEY",
-			Bytes: m,
+			Bytes: der,
 		}
 
-		block, err = x509.EncryptPEMBlock(rand.Reader, block.Type, block.Bytes,
-			[]byte(password), x509.PEMCipherAES256)
-		if err != nil {
-			panic(err)
-		}
-
-		err = pem.Encode(file, block)
+        err = pem.Encode(file, block)
 		if err != nil {
 			panic(err)
 		}
