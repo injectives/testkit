@@ -64,17 +64,47 @@ func writeKeyEncrypted(password, path string, keyx interface{}) {
 
 	switch key := keyx.(type) {
 	case *rsa.PrivateKey:
-	    der, err := pkcs8.ConvertPrivateKeyToPKCS8(key, []byte(password))
+	    m, err := x509.MarshalPKCS8PrivateKey(key)
+	    block := &pem.Block{
+            Type:  "RSA PRIVATE KEY",
+            Bytes: m,
+        }
+
+        block, err = x509.EncryptPEMBlock(rand.Reader, block.Type, block.Bytes, []byte(password), x509.PEMCipherAES256)
+        if err != nil {
+            panic(err)
+        }
+
+        pemBytes := pem.EncodeToMemory(block)
+        block2, _ := pem.Decode(pemBytes)
+
+        var (
+            privateKeyBytes []byte
+            privateKey      interface{}
+            err2             error
+        )
+
+        privateKeyBytes, err2 = x509.DecryptPEMBlock(block2, []byte(password))
+        if err2 != nil {
+            panic(err)
+        }
+
+        privateKey, err2 = x509.ParsePKCS8PrivateKey(privateKeyBytes)
+        if err != nil {
+            panic(err)
+        }
+
+	    der, err := pkcs8.ConvertPrivateKeyToPKCS8(privateKey, []byte(password))
 		if err != nil {
 			panic(err)
 		}
 
-		block := &pem.Block{
+		block3 := &pem.Block{
 			Type:  "ENCRYPTED PRIVATE KEY",
 			Bytes: der,
 		}
 
-        err = pem.Encode(file, block)
+        err = pem.Encode(file, block3)
 		if err != nil {
 			panic(err)
 		}
