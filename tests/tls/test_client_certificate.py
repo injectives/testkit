@@ -59,7 +59,7 @@ class _TestClientCertificateBase(TestkitTlsTestCase):
 
     @classmethod
     def _client_certificate_password(cls, i=1):
-        return f"thepassword{i}"
+        return "neo4j"
 
     @classmethod
     def _get_client_certificate(cls, i=1):
