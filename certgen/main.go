@@ -159,7 +159,7 @@ func generateServer(parent *x509.Certificate, parentPrivate interface{}, notBefo
 }
 
 func generateRsa4096Sha512(notBefore, notAfter time.Time, commonName string) (interface{}, []byte) {
-	key, err := rsa.GenerateKey(rand.Reader, 4096)
+	key, err := rsa.GenerateKey(rand.Reader, 2048)
 	if err != nil {
 		panic(err)
 	}
