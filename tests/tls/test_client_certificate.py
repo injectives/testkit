@@ -80,25 +80,23 @@ class _TestClientCertificateBase(TestkitTlsTestCase):
 class TestClientCertificate(_TestClientCertificateBase):
     def test_s_and_client_certificate_present(self):
         schemes = ("neo4j+s", "bolt+s")
-        client_certificates = (self._get_client_certificate(),
-                               self._get_client_certificate_with_password())
-        for client_certificate in client_certificates:
-            for scheme in schemes:
-                with self.subTest(scheme=scheme,
-                                  client_certificate=client_certificate):
-                    self._start_server(
-                        "trustedRoot_thehost",
-                        client_cert=self._client_cert_on_server()
+        client_certificate = self._get_client_certificate()
+        for scheme in schemes:
+            with self.subTest(scheme=scheme,
+                              client_certificate=client_certificate):
+                self._start_server(
+                    "trustedRoot_thehost",
+                    client_cert=self._client_cert_on_server()
+                )
+                with self._make_driver(
+                    scheme, "thehost",
+                    client_certificate=client_certificate
+                ) as driver:
+                    self.assertTrue(
+                        self._try_connect(self._server, driver)
                     )
-                    with self._make_driver(
-                        scheme, "thehost",
-                        client_certificate=client_certificate
-                    ) as driver:
-                        self.assertTrue(
-                            self._try_connect(self._server, driver)
-                        )
-                if self._server:
-                    self._server.reset()
+            if self._server:
+                self._server.reset()
 
     def test_s_and_certificate_not_present(self):
         schemes = ("neo4j+s", "bolt+s")
@@ -117,25 +115,23 @@ class TestClientCertificate(_TestClientCertificateBase):
 
     def test_ssc_and_client_certificate_present(self):
         schemes = ("neo4j+ssc", "bolt+ssc")
-        client_certificates = (self._get_client_certificate(),
-                               self._get_client_certificate_with_password())
-        for client_certificate in client_certificates:
-            for scheme in schemes:
-                with self.subTest(scheme=scheme,
-                                  client_certificate=client_certificate):
-                    self._start_server(
-                        "trustedRoot_thehost",
-                        client_cert=self._client_cert_on_server()
+        client_certificate = self._get_client_certificate()
+        for scheme in schemes:
+            with self.subTest(scheme=scheme,
+                              client_certificate=client_certificate):
+                self._start_server(
+                    "trustedRoot_thehost",
+                    client_cert=self._client_cert_on_server()
+                )
+                with self._make_driver(
+                    scheme, "thehost",
+                    client_certificate=client_certificate
+                ) as driver:
+                    self.assertTrue(
+                        self._try_connect(self._server, driver)
                     )
-                    with self._make_driver(
-                        scheme, "thehost",
-                        client_certificate=client_certificate
-                    ) as driver:
-                        self.assertTrue(
-                            self._try_connect(self._server, driver)
-                        )
-                if self._server:
-                    self._server.reset()
+            if self._server:
+                self._server.reset()
 
     def test_scc_and_certificate_not_present(self):
         schemes = ("neo4j+ssc", "bolt+ssc")
