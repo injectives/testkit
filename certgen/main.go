@@ -44,7 +44,7 @@ func writeKey(path string, keyx interface{}) {
 		}
 	case *rsa.PrivateKey:
 		m := x509.MarshalPKCS1PrivateKey(key)
-		err := pem.Encode(file, &pem.Block{Type: "PRIVATE KEY", Bytes: m})
+		err := pem.Encode(file, &pem.Block{Type: "RSA PRIVATE KEY", Bytes: m})
 		if err != nil {
 			panic(err)
 		}
