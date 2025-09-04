@@ -144,7 +144,7 @@ def create_or_replace(image, name, command=None, mount_map=None, host_map=None,
             cmd.append("--network-alias=" + a)
     if "TEST_DOCKER_USER" in os.environ:
         cmd.extend(["-u", os.environ["TEST_DOCKER_USER"]])
-    cmd.append("--security-opt seccomp=unconfined")
+    cmd.extend(["--security-opt", "seccomp=unconfined"])
     cmd.append(image)
     if command:
         cmd.extend(command)
